@@ -1,0 +1,23 @@
+body{
+  color: green;
+  font-size: 20px;
+  background-color: cornsilk;
+}
+
+h1{
+  color: red;
+  padding: 15px 50px 50px 200px;
+}
+
+.image{
+  color:  #6600ff;
+  font-family: cursive;
+  border-color: black;
+  margin:10px;
+  /* padding: 50px 50px 50px 50px; */
+}
+
+#fig2{
+  color:  #3366FF;
+  margin-bottom: 100px;
+}

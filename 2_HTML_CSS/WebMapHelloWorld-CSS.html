@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Tao's first webpage
+    </title>
+    <!-- step 5b: internal style -->
+
+    	<!-- step 5c: external style -->
+    	<link rel="stylesheet" href="css/WebMapHelloWorld.css">
+    	<!-- <style>
+    	body{
+    		color: green;
+    		font-size: 20px;
+    		background-color: cornsilk;
+    	}
+    	</style>
+
+    	<style>
+    	h1{
+    		color: red;
+    		padding: 15px 50px 50px 200px;
+    	}
+    	</style>
+
+    	<style>
+    	.image{
+    		color:  #6600ff;
+    		font-family: cursive;
+    		border-color: black;
+    		margin:10px;
+    		/* padding: 50px 50px 50px 50px; */
+    	}
+    	</style> -->
+
+    	<!-- <style>
+    	#fig2{
+    		color:  #3366FF;
+    		margin-bottom: 100px;
+    	}
+    	</style> -->
+  </head>
+
+  <body>
+    <h1 id="USF"> University of South Florida </h1>
+
+    <!-- step 3b: add internal link with ID; practice with adding Back to top-->
+  	<p>
+  		<a href="#SGS" title="SGS section">SGS</a>
+      <br>
+  		<a href="#Rocky" title="Rocky section">Rocky</a>
+  		<br>
+  		<a href="#Me" title="personal section">About Me</a>
+  	</p>
+
+    <!-- step 4: add <div> tag to create a class -->
+  	<div class="image" id="fig1">
+    <!-- <img src="pics/USF.jpg" width="400" alt="USF Tampa Campus"> -->
+    <!-- step 2a: from local image file to external url -->
+    <!-- <img src="https://media.wtsp.com/assets/WTSP/images/5adf8c34-ca2a-4462-b79e-4a25d8c97500/5adf8c34-ca2a-4462-b79e-4a25d8c97500_750x422.jpg" width="400"alt="University of South Florida"> -->
+
+    <!-- step 2b: add style to an image -->
+    <img src="https://media.wtsp.com/assets/WTSP/images/5adf8c34-ca2a-4462-b79e-4a25d8c97500/5adf8c34-ca2a-4462-b79e-4a25d8c97500_750x422.jpg" style="float:right; width:50%;margin:0,0,15px,15px;"alt="University of South Florida">
+
+    <!-- step 1a: add a short description from https://www.usf.edu/about-usf/index.aspx -->
+    <p>
+      Welcome to the University of South Florida. Though a relatively young university, founded in 1956, we have rich traditions – traditions of access and opportunity for students, of academic excellence, of groundbreaking research, of serving our communities.
+    </p>
+    <p>
+      USF is situated in the vibrant and diverse Tampa Bay region, with campuses in Tampa, St. Petersburg and Sarasota-Manatee. Together, our campuses serve more than 50,000 students pursuing undergraduate, graduate, specialist and professional degrees. Across our 13 colleges, undergraduates choose from more than 200 majors, minors and concentrations, from business and engineering to the arts and USF Health.
+    </p>
+
+    </div>
+
+    <h2 style="clear:both" id="SGS"> School of Geoscience </h2>
+
+    <div class="image" id="fig2">
+    <!-- <img src="pics/Geosciences.jpeg" width="400" alt="School of Geosciences"> -->
+
+    <!-- step 2b: add style to an image -->
+    <img src="pics/Geosciences.jpeg" style="float:left; width:50%;margin:0,0,15px,15px;"alt="School of Geosciences">
+
+    <!-- step 1b: add a short description from https://www.usf.edu/arts-sciences/departments/geosciences/about/index.aspx -->
+    <p>
+    The School of Geosciences was formed through the merger of three degree-granting programs: Geology, Environmental Science & Policy, and Geography. Geology and Environmental Science & Policy programs are commonly linked, at other Florida SUS institutions (e.g., Florida State University’s Department of Earth, Ocean, and Atmospheric Studies; College of Arts and Sciences) and other AAU institutions (e.g., the University of Pittsburg’s Department of Geology and Environmental Science; College of Arts and Sciences). Our innovation was to add the Geography program, uniquely adding both the human element of the environment and the geospatial science and technology elements common to all three disciplines. Starting with this innovative model, the School of Geosciences has steadily built toward a common vision, sharing faculty, staff, students, curricula, and facilities and resources, creating and graduating students uniquely qualified to address the complex socioenvironmental problems common to our modern world.
+    </p>
+    </div>
+
+    <!-- step 2c: add a gif -->
+    <h2 style="clear:both" id="Rocky"> USF Mascot</h2>
+
+    <div class="image" id="fig3">
+    <img src= "https://media2.giphy.com/media/XGtNIEoYB9KirJzO60/giphy.gif" alt="USF Mascot" style="float:right; width:50%">
+
+    <!-- step 3a: add external link with the <a> tag, do the same for USF and Geosciences-->
+    <p>
+    The mascot of USF is Rocky the Bull. Click to know more about <a href="https://www.usf.edu/about-usf/rocky.aspx"> Rocky</a>.<br>
+    Rocky the Bull got his start as a toy idea for the USF Bookstore in 1965. The first Rocky was drawn as a cartoon rendition for USF Athletics to use in their newsletters.
+    </p>
+    </div>
+
+    <!-- this is an in-class practice -->
+    <h3 style="clear:both" id="Me"> Ran Tao </h3>
+    <!-- step 5a: inline style -->
+    <p style= "color:#002BFF;font-size:20px;font-family:Times New Roman"> I'm an <em>assistant professor</em> and I teach Web Mapping
+    </p>
+    <!-- <p> I'm an <em>assistant professor</em> and I teach Web Mapping
+    </p> -->
+    <a href="#USF" title="top section">Back to top</a>
+  </body>
+</html>
