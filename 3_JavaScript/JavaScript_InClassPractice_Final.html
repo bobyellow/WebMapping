@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>JS Practice</title>
+  </head>
+  <body>
+    <h1>
+      Hello JavaScript
+    </h1>
+
+    <!-- step0: Create HTML elements to display the results later -->
+   <p id="testLine1"></p>
+   <p id="testLine2"></p>
+   <p id="testLine3"></p>
+
+    <!-- <script> //step1: define numeric variables
+        var a;
+        a = 10;
+        var b=2;
+        b=3;
+        var sum;
+        sum = a + b;
+        var product1;
+        product1 =  b*a;
+        var difference;
+        difference = b - a;
+
+        // alert(difference);
+        // Display the results in HTML
+        document.getElementById("testLine1").textContent = "Sum: " + sum;
+        document.getElementById("testLine2").textContent = "Product: " + product1;
+        document.getElementById("testLine3").textContent = "Difference: " + difference;
+    </script> -->
+
+    <!-- <script> //step2: define string variables
+      var FirstName = "Ran";
+      var LastName = "Tao";
+      var IN;//variable of initials
+      IN = FirstName.substring(0,1)+LastName.substring(0,1);
+
+      //var FullName = FirstName + "   " + LastName;
+      var message= "My initial is  " + IN;
+      // alert(message);
+      // Display the results in HTML
+      document.getElementById("testLine1").textContent =  message;
+    </script> -->
+
+    <!-- <script> //step3: define a function to calculate shape size
+      function calRectArea(length,width){
+        var RectArea = length * width;
+        return RectArea;
+      }
+      var result1;
+      result1 = calRectArea(10,6);
+      var result2;
+      result2 = calRectArea(100,50);
+      //alert(result2);
+
+      function calTriArea(height,width){
+        var TriArea = height * width * 0.5;
+        return TriArea;
+      }
+
+      var result3;
+      result3 = calTriArea(100,50);
+
+      //alert(result3);
+      // Display the results in HTML
+      document.getElementById("testLine1").textContent = "The size of rectangle 1 is: " + result1;
+      document.getElementById("testLine2").textContent = "The size of rectangle 2 is: " + result2;
+      document.getElementById("testLine3").textContent = "The size of the triangle is: " + result3;
+
+    </script> -->
+
+
+    <!-- <script> //step 4: create an object
+      var mycar = {
+        make: "VW",
+        model: "Altas",
+        year: 2022,
+        color: "black"
+      }
+      var carInfo = mycar.year + " "
+                    +mycar.color + " "
+                    +mycar.make + " "
+                    +mycar.model;
+      //alert(carInfo);
+      // Display the results in HTML
+      document.getElementById("testLine1").textContent =  carInfo;
+    </script> -->
+
+    <!-- <script> //step 5: create a class
+      function Car(make,model,year,color){
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.color = color;
+      }
+
+      var mycar = new Car("VW","Atlas",2022,"black");
+      var mydreamcar = new Car("Nissan","GTR",2027,"red");
+
+      var carInfo = mydreamcar.year + " "
+                    +mydreamcar.color + " "
+                    +mydreamcar.make + " "
+                    +mydreamcar.model;
+
+      // Display the results in HTML
+      document.getElementById("testLine1").textContent =  carInfo;
+    </script> -->
+
+  </body>
+</html>
