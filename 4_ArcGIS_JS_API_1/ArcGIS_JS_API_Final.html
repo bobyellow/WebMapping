@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Tao API 1stClass</title>
+
+    <!-- step 1b: set up the mapping area by styling the div tag -->
+      <style>
+        html,
+        body,
+        #mapDiv{
+            padding:0;
+            margin:0;
+            height: 90%;
+            width: 100%;
+        }
+      </style>
+      <!-- step2: reference the API with 2 lines of codes (CDN approach) -->
+      <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+      <script src="https://js.arcgis.com/4.28/"></script>
+  </head>
+
+  <body>
+
+<!-- step 1a: create a div tag with an ID as the placeholder for the map -->
+  <div id="mapDiv">
+  </div>
+
+  <h1>My first map with API</h1>
+  <!-- step3: the 'require' statement -->
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Compass"
+    ],
+      function (esriConfig,Map, MapView,ScaleBar,Compass) {
+
+        // Step4: design your map with JS codes
+        // step4a: add your API key
+        esriConfig.apiKey = "Replace with your API key";
+
+        // step4b: create a map object from the "Map" class
+        const TaoMap = new Map({
+         basemap: "arcgis-streets" // Basemap layer service
+       });
+
+       // step4c: create a MapView object
+       const TaoView = new MapView({
+       map: TaoMap,
+       center: [-82.4505, 27.9727], // Longitude, latitude
+       zoom: 11, // Zoom level
+       background: { // autocasts new ColorBackground()
+         color: "magenta" // autocasts as new Color()
+      },
+       container: "mapDiv" // Div element
+     });
+
+     //step 5: add a scalebar；remember to update require(xxx)
+     let scaleBar = new ScaleBar({
+        view: TaoView,
+        style: "ruler",
+        unit:"metric"
+      });
+      // Add the scalebar to the bottom left corner of the view
+      TaoView.ui.add(scaleBar, {
+        position: "bottom-left"
+      });
+
+     //step 6: add a compass
+        let Taocompass = new Compass({
+          view: TaoView
+        });
+      // adds the compass to the top right corner of the MapView
+        TaoView.ui.add(Taocompass, "top-right");
+
+   });//this }) ending of the script is tricky and easily forgotten
+  </script>
+  </body>
+</html>
