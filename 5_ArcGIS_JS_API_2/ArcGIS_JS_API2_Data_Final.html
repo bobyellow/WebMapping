@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Tao API 1stClass</title>
+
+      <style>
+        html,
+        body,
+        #mapDiv{
+            padding:0;
+            margin:0;
+            height: 100%;
+            width: 100%;
+        }
+      </style>
+      <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+      <script src="https://js.arcgis.com/4.28/"></script>
+  </head>
+
+  <body>
+
+  <div id="mapDiv">
+  </div>
+
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Compass",
+      "esri/layers/FeatureLayer",
+      "esri/layers/GeoJSONLayer"
+    ],
+      function (esriConfig,Map, MapView,ScaleBar,Compass,FeatureLayer,GeoJSONLayer) {
+
+
+        esriConfig.apiKey = "Replace with your API key";
+
+
+        const TaoMap = new Map({
+         basemap: "arcgis-streets" // Basemap layer service
+       });
+
+       const TaoView = new MapView({
+       map: TaoMap,
+       center: [-82.4505, 27.9727], // Longitude, latitude
+       zoom: 11, // Zoom level
+       container: "mapDiv" // Div element
+     });
+
+     let scaleBar = new ScaleBar({
+        view: TaoView,
+        style: "ruler",
+        unit:"metric"
+      });
+      // Add the scalebar to the bottom left corner of the view
+      TaoView.ui.add(scaleBar, {
+        position: "bottom-left"
+      });
+
+        let Taocompass = new Compass({
+          view: TaoView
+        });
+      // adds the compass to the top right corner of the MapView
+        TaoView.ui.add(Taocompass, "top-right");
+
+      //Step2a: define the school symbol
+      var schoolSymbol = {
+          type: "picture-marker",
+         url: "http://static.arcgis.com/images/Symbols/PeoplePlaces/School.png",
+         width: "20px",
+         height: "20px"
+         };
+
+      //Step1: Create featurelayer from feature service
+       const schoolLayer = new FeatureLayer({
+         // URL to the service
+         url: "https://services1.arcgis.com/sQOueNHZBxRJjRN3/arcgis/rest/services/Hillisborough_school_map_Tao_WFL1/FeatureServer/0",
+         title: "Public Scholls",
+         popupTemplate: {
+                 title: "{NAME}",
+                 content: "The website of this school is: {WEBSITE}, and the address is {FULLADDR}"
+             },
+          //Step2b: add renderer to specify the school symbol
+             renderer:{
+               type: "simple",  // autocasts as new SimpleRenderer()
+                 symbol: schoolSymbol
+             }
+       });
+       TaoMap.add(schoolLayer);
+
+       //Step3: Add GeoJSONLayer
+       var hospitalSymbol = {
+          type: "picture-marker",
+          url: "http://static.arcgis.com/images/Symbols/SafetyHealth/Ambulance.png",
+          width: "20px",
+          height: "20px"
+          };
+
+       //Create a GeoJSONLayer
+       var geojsonlayer = new GeoJSONLayer({
+           url: "https://arcgis.tampagov.net/arcgis/rest/services/OpenData/Location/MapServer/3/query?outFields=*&where=1%3D1&f=geojson",//add from a URL
+           title: "Hospitals",
+           renderer:{
+             type: "simple",  // autocasts as new SimpleRenderer()
+               symbol: hospitalSymbol
+           },
+               popupTemplate: {
+                   title: "{NAME}"
+                 }
+
+             });
+       TaoMap.add(geojsonlayer);  // adds the layer to the map
+
+
+
+
+   });//this }) ending of the script is tricky and easily forgotten
+  </script>
+  </body>
+</html>

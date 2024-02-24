@@ -1,0 +1,168 @@
+<html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS API for JavaScript Tutorials: Add a point, line, and polygon</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.18/"></script>
+  <script>
+
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+    "esri/Graphic",
+    "esri/layers/GraphicsLayer"
+
+    ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
+
+  esriConfig.apiKey ="Replace with your API key";
+  
+  //create a map object with baselayer for now
+  const map = new Map({
+    basemap: "arcgis-topographic" //Basemap layer service
+  });
+
+  //create a mapview to host to map and center at USF campus
+  const view = new MapView({
+    map: map,
+    center: [-82.413313,28.061327], //Longitude, latitude
+    zoom: 15,
+    container: "viewDiv"
+ });
+
+ const graphicsLayer = new GraphicsLayer();
+ map.add(graphicsLayer);
+
+ //define geogemtry of point1
+ const point1 = {
+   type: "point",
+   longitude: -82.41230,
+   latitude: 28.05958
+ };
+ //set the point marker symbol
+ const simpleMarkerSymbol1 = {
+   type: "simple-marker",
+   color: [8, 126, 106],
+   outline: {
+     color: [255, 255, 255],
+     width: 1
+   }
+ };
+
+ // Add graphic when GraphicsLayer is constructed
+ const pointGraphic1 = new Graphic({
+   geometry: point1,
+   symbol: simpleMarkerSymbol1
+ });
+ graphicsLayer.add(pointGraphic1);
+
+ //define geogemtry of point2
+ const point2 = {
+   type: "point",
+   longitude: -82.41351,
+   latitude: 28.06390
+ };
+  //set the point marker symbol
+ const simpleMarkerSymbol2 = {
+   type: "simple-marker",
+   color: [126, 8, 126],
+   outline: {
+     color: [255, 255, 255],
+     width: 1
+   }
+ };
+   const pointGraphic2 = new Graphic({
+   geometry: point2,
+   symbol: simpleMarkerSymbol2
+ });
+ graphicsLayer.add(pointGraphic2);
+
+
+    // Create the polyline to represent the route
+ const polyline = {
+    type: "polyline",
+    paths: [
+      [-82.41230, 28.05958], //Longitude, latitude
+      [-82.412307, 28.05983],
+      [-82.412307, 28.06009],
+      [-82.413215, 28.06009],
+      [-82.413215, 28.06126],
+      [-82.413215, 28.06132],
+      [-82.413222, 28.06187],
+      [-82.413222, 28.06197],
+      [-82.413222, 28.06308],
+      [-82.413222, 28.06318],
+      [-82.413189, 28.06365],
+      [-82.41351, 28.06390]
+     ]
+ };
+ //set the line symbol
+ const simpleLineSymbol = {
+    type: "simple-line",
+    color: [126, 29, 8],
+    width: 2,
+    style:"dash"
+ };
+
+ const polylineGraphic = new Graphic({
+    geometry: polyline,
+    symbol: simpleLineSymbol
+ });
+ graphicsLayer.add(polylineGraphic);
+
+ // Create a polygon geometry for campus outline
+ const polygon = {
+    type: "polygon",
+    rings: [
+       [-82.426063, 28.069157],
+     [-82.426117, 28.054475],
+     [-82.401851, 28.054421],
+     [-82.401897, 28.069188],
+    ]
+ };
+ //set the polygon-fill symbol
+ const simpleFillSymbol = {
+    type: "simple-fill",
+    color: [120, 79, 20, 0],
+    outline: {
+        color: [120, 79, 20],
+        width: 1
+    }
+ };
+
+ const popupTemplate = {
+    title: "{Name}",
+    content: "{Description}"
+ }
+ const attributes = {
+    Name: "USF Tampa",
+    Description: "The USF Tampa Campus"
+ }
+
+ const polygonGraphic = new Graphic({
+    geometry: polygon,
+    symbol: simpleFillSymbol,
+
+    attributes: attributes,
+    popupTemplate: popupTemplate
+
+ });
+ graphicsLayer.add(polygonGraphic);
+
+ });
+</script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>

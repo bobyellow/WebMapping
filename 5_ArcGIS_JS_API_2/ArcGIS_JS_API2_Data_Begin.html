@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Tao API 1stClass</title>
+
+      <style>
+        html,
+        body,
+        #mapDiv{
+            padding:0;
+            margin:0;
+            height: 100%;
+            width: 100%;
+        }
+      </style>
+      <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+      <script src="https://js.arcgis.com/4.28/"></script>
+  </head>
+
+  <body>
+
+  <div id="mapDiv">
+  </div>
+
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Compass"
+    ],
+      function (esriConfig,Map, MapView,ScaleBar,Compass) {
+
+
+        esriConfig.apiKey = "Replace with your API key";
+
+
+        const TaoMap = new Map({
+         basemap: "arcgis-streets" // Basemap layer service
+       });
+
+       const TaoView = new MapView({
+       map: TaoMap,
+       center: [-82.4505, 27.9727], // Longitude, latitude
+       zoom: 11, // Zoom level
+       container: "mapDiv" // Div element
+     });
+
+     let scaleBar = new ScaleBar({
+        view: TaoView,
+        style: "ruler",
+        unit:"metric"
+      });
+      // Add the scalebar to the bottom left corner of the view
+      TaoView.ui.add(scaleBar, {
+        position: "bottom-left"
+      });
+
+        let Taocompass = new Compass({
+          view: TaoView
+        });
+      // adds the compass to the top right corner of the MapView
+        TaoView.ui.add(Taocompass, "top-right");
+
+   });//this }) ending of the script is tricky and easily forgotten
+  </script>
+  </body>
+</html>
