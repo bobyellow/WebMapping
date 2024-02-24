@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Map with ArcGIS API</title>
+
+    <!-- set up the map div style -->
+    <style>
+      html,
+      body,
+      #viewDiv{
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.28/"></script>
+
+  </head>
+  <body>
+      <!-- to set up a map container on the page with div tag -->
+      <div id="viewDiv">
+      </div>
+
+      <!-- the require statement to create a map -->
+      <script>
+       require(["esri/config",
+       "esri/Map",
+       "esri/views/MapView",
+       "esri/layers/FeatureLayer",
+       "esri/widgets/ScaleBar",
+     "esri/widgets/Legend",
+     "esri/widgets/LayerList"
+   ], function (esriConfig, Map, MapView,FeatureLayer,ScaleBar,Legend,LayerList) {
+         //all the codes for creating maps are here
+         //add the key first
+         esriConfig.apiKey = "Replace this with your Key";
+         // create a map object
+         const Taomap = new Map({
+          basemap: "dark-gray" // Basemap layer service
+          //layers: schoolLayer
+        });
+
+        //create a mapView object to contain the map
+        const view = new MapView({
+          //map: Taomap,
+          center: [-82.3990, 27.8912], // Longitude, latitude
+          zoom: 10, // Zoom level
+          container: "viewDiv" // Div element
+        });
+        view.map = Taomap;
+
+          //Step 1: create a unique-symbol renderer for the school layers
+         let uni_sch_renderer = {
+            type: "unique-value",  // autocasts as new UniqueValueRenderer()
+            field: "FEATURECOD",
+            defaultSymbol: { type: "simple-marker" },  // autocasts as new SimpleFillSymbol()
+            uniqueValueInfos: [{
+              // All features with value of "School: Elementary" will be blue
+              value: "School: Elementary",
+              symbol: {
+                type: "simple-marker",  // autocasts as new SimpleFillSymbol()
+                color: "blue",
+                 size: "12px"
+              }
+            }, {
+              // All features with value of "School: Middle School" will be green
+              value: "School: Middle School",
+              symbol: {
+                type: "simple-marker",  // autocasts as new SimpleFillSymbol()
+                color: "green",
+                 size: "12px"
+              }
+            }, {
+              // All features with value of "School: High School" will be red
+              value: "School: High School",
+              symbol: {
+                type: "simple-marker",  // autocasts as new SimpleFillSymbol()
+                color: "red",
+                 size: "12px"
+              }
+            }]
+          };
+
+          //Step 2: create a unique-symbol renderer for the Zipcode layers
+          let uni_zip_renderer = {
+            type: "unique-value",  // autocasts as new UniqueValueRenderer()
+            field: "name",
+            defaultSymbol: { type: "simple-fill",color:"white"},  // autocasts as new SimpleFillSymbol()
+            uniqueValueInfos: [{
+              // All features with value of "North" will be blue
+              value: "Tampa",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "blue"
+              }
+            }, {
+              // All features with value of "East" will be green
+              value: "Lutz",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "green"
+              }
+            }, {
+              value: "Brandon",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "red"
+              }
+            }, {
+              // All features with value of "West" will be yellow
+              value: "Plant City",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "yellow"
+              }
+            }]
+          };
+
+
+          //Step 3: create a heatmap renderer for the school layers
+      var heat_sch_renderer= {
+        type: "heatmap",
+        colorStops: [
+          { ratio: 0, color: "rgba(255, 255, 255, 0)" },
+          { ratio: 0.2, color: "rgba(255, 255, 255, 1)" },
+          { ratio: 0.5, color: "rgba(255, 140, 0, 1)" },
+          { ratio: 0.8, color: "rgba(255, 140, 0, 1)" },
+          { ratio: 1, color: "rgba(255, 0, 0, 1)" }
+        ],
+        minPixelIntensity: 0,
+        maxPixelIntensity: 20
+      };
+
+
+      // Step 4a: create a symbol for each class break: classbreaks of the zipcode layer based on # of schools inside
+          const less35 = {
+            type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            color: "#fffcd4",
+            style: "solid",
+            outline: {
+              width: 0.2,
+              color: [255, 255, 255, 0.5]
+            }
+          };
+
+          const less50 = {
+            type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            color: "#b1cdc2",
+            style: "solid",
+            outline: {
+              width: 0.2,
+              color: [255, 255, 255, 0.5]
+            }
+          };
+
+          const more50 = {
+            type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            color: "#38627a",
+            style: "solid",
+            outline: {
+              width: 0.2,
+              color: [255, 255, 255, 0.5]
+            }
+          };
+
+          const more75 = {
+            type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            color: "#0d2644",
+            style: "solid",
+            outline: {
+              width: 0.2,
+              color: [255, 255, 255, 0.5]
+            }
+          };
+
+          //Step 4b: create an instance of ClassBreaksRenderer
+          // define the renderer for choropleth map of school-zipcode layer
+          const zip_class_renderer = {
+            type: "class-breaks", // autocasts as new ClassBreaksRenderer()
+            field: "Point_Coun",
+            //normalizationField: "EDUCBASECY",
+            legendOptions: {
+              title: "number of schools"
+            },
+            defaultSymbol: {
+              type: "simple-fill", // autocasts as new SimpleFillSymbol()
+              color: "black",
+              style: "backward-diagonal",
+              outline: {
+                width: 0.5,
+                color: [50, 50, 50, 0.6]
+              }
+            },
+            defaultLabel: "no data",
+              //Step 4C: set symbol on each class break
+            classBreakInfos: [
+              {
+                minValue: 0,
+                maxValue: 1,
+                symbol: less35,
+                label: "1 or less"
+              },
+              {
+                minValue: 2,
+                maxValue: 3,
+                symbol: less50,
+                label: "2 or 3"
+              },
+              {
+                minValue: 4,
+                maxValue: 5,
+                symbol: more50,
+                label: "4 or 5"
+              },
+              {
+                minValue: 6,
+                maxValue: 15,
+                symbol: more75,
+                label: "more than 6"
+              }
+            ]
+          };
+
+         // school location layer
+         var schoolLayer = new FeatureLayer({
+             url:"https://services1.arcgis.com/sQOueNHZBxRJjRN3/arcgis/rest/services/Hillisborough_school_map_Tao_WFL1/FeatureServer/0",
+             title:"Schools",
+             //renderer: uni_sch_renderer,
+             renderer: heat_sch_renderer,
+             popupTemplate: {
+                     title: "{NAME}",
+                     content: "The website of this school is: {WEBSITE}, and the address is {FULLADDR}. The owner is {OWNER}"
+                 }
+       		  });
+
+          // school zipcode layer (how many schools inside each zipcode area)
+            const schooZipLayer = new FeatureLayer({
+              url:"https://services1.arcgis.com/sQOueNHZBxRJjRN3/arcgis/rest/services/SchoolZipcode_GeoJSON/FeatureServer/0",
+              title: "Hillsborough Zipcode",
+              //renderer: uni_zip_renderer,
+              renderer: zip_class_renderer,
+              popupTemplate: {
+                // autocast as esri/PopupTemplate
+                title: "Zipcode {Zip_Code}",
+                content: "{Point_Coun} schools inside this zipcode area."
+              },
+              opacity: 0.6
+            });
+
+
+        Taomap.add(schooZipLayer);
+        Taomap.add(schoolLayer);
+
+        var scaleBar = new ScaleBar({
+          view: view
+        });
+        // Add widget to the bottom left corner of the view
+        view.ui.add(scaleBar, {
+          position: "bottom-right"
+        });
+
+        //Step 5: add a legend
+        var legend = new Legend({
+          view: view,
+          layerInfos: [
+            {
+            layer: schoolLayer,
+            title: "School types"
+          },
+          {
+            layer: schooZipLayer
+          }
+        ]
+        });
+        view.ui.add(legend, "bottom-left");
+
+        //Step 6: add a layerList widget
+        let layerList = new LayerList({
+          view: view
+        });
+        // Adds widget below other elements in the top left corner of the view
+        view.ui.add(layerList, {
+          position: "top-right"
+        });
+
+       });
+     </script>
+
+  </body>
+</html>

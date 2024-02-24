@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Map with ArcGIS API</title>
+
+    <!-- set up the map div style -->
+    <style>
+      html,
+      body,
+      #viewDiv{
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.28/"></script>
+
+  </head>
+  <body>
+      <!-- to set up a map container on the page with div tag -->
+      <div id="viewDiv">
+      </div>
+
+      <!-- the require statement to create a map -->
+      <script>
+       require(["esri/config",
+       "esri/Map",
+       "esri/views/MapView",
+       "esri/layers/FeatureLayer",
+       "esri/widgets/ScaleBar"
+   ], function (esriConfig, Map, MapView,FeatureLayer,ScaleBar) {
+         //all the codes for creating maps are here
+         //add the key first
+         esriConfig.apiKey = "Replace this with your Key";
+         // create a map object
+         const Taomap = new Map({
+          basemap: "dark-gray" // Basemap layer service
+          //layers: schoolLayer
+        });
+
+        //create a mapView object to contain the map
+        const view = new MapView({
+          //map: Taomap,
+          center: [-82.3990, 27.8912], // Longitude, latitude
+          zoom: 10, // Zoom level
+          container: "viewDiv" // Div element
+        });
+        view.map = Taomap;
+
+
+         // school location layer
+         var schoolLayer = new FeatureLayer({
+             url:"https://services1.arcgis.com/sQOueNHZBxRJjRN3/arcgis/rest/services/Hillisborough_school_map_Tao_WFL1/FeatureServer/0",
+             title:"Schools",
+             //renderer: uni_sch_renderer,
+             //renderer: heat_sch_renderer,
+             popupTemplate: {
+                     title: "{NAME}",
+                     content: "The website of this school is: {WEBSITE}, and the address is {FULLADDR}. The owner is {OWNER}"
+                 }
+       		  });
+
+          // school zipcode layer (how many schools inside each zipcode area)
+            const schooZipLayer = new FeatureLayer({
+              url:"https://services1.arcgis.com/sQOueNHZBxRJjRN3/arcgis/rest/services/SchoolZipcode_GeoJSON/FeatureServer/0",
+              title: "Hillsborough Zipcode",
+              //renderer: uni_zip_renderer,
+              //renderer: zip_class_renderer,
+              popupTemplate: {
+                // autocast as esri/PopupTemplate
+                title: "Zipcode {Zip_Code}",
+                content: "{Point_Coun} schools inside this zipcode area."
+              },
+              opacity: 0.6
+            });
+
+
+        Taomap.add(schooZipLayer);
+        Taomap.add(schoolLayer);
+
+        var scaleBar = new ScaleBar({
+          view: view
+        });
+        // Add widget to the bottom left corner of the view
+        view.ui.add(scaleBar, {
+          position: "bottom-right"
+        });
+
+
+
+       });
+     </script>
+
+  </body>
+</html>
